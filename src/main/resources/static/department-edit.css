@@ -1,0 +1,41 @@
+.wrapper {
+    display: flex!important;
+    flex-direction: row!important;
+    flex-wrap: wrap!important;
+    justify-content: center!important;
+    align-items: stretch!important;
+
+    width: 85vw!important;
+}
+
+form {
+    background: rgba(0,0,0,0.6);
+    border-radius: 1vh;
+    padding: 2.5vh;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    margin: 1.5vh;
+}
+
+form * {
+    width: 98%;
+}
+
+.nuclear-option {
+    position: fixed;
+    top: 12%;
+    left: 25%;
+    z-index: 999;
+}
+
+.nuclear-option * {
+    all: unset!important;
+    position: relative;
+}

@@ -1,0 +1,58 @@
+<html>
+<head>
+    <title>
+        Erin Argo | Proj5
+    </title>
+    <link rel="stylesheet" href="/global.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script>
+        function closeModal() {
+            document.querySelector('.alert').remove();
+        }
+    </script>
+</head>
+
+<body>
+<nav class="top-nav">
+            <span class="nav-left">
+                <a href="/" id="logo">Project 5 CSC 471 - Erin Argo</a>
+            </span>
+
+    <span class="nav-right">
+                <a href="/employees">Employees</a>
+                <a href="/projects">Projects</a>
+                <a href="/departments">Departments</a>
+            </span>
+
+    <div></div>
+</nav>
+
+<div class="alert" th:if="${ alert }">
+    <span th:text="${ alert }" />
+    <a onclick="closeModal()">Ok</a>
+</div>
+
+<section class="side-nav">
+    <span class="name">username</span>
+    <span class="icons">
+                <img class="avatar" src="https://sugargeekshow.com/wp-content/uploads/2019/10/chocolate-chip-muffins-featured.jpg">
+            </span>
+</section>
+
+<div class="wrapper">
+    To get started look at the navbar at the top and make your selection. You can create however many of those options
+    that you want and once you've done that you have options.
+    For employees you can assign dependents to them that have a name and a date of birth.
+    You can also assign employees to departments. Departments can have a manager which can be any employee.
+    One manager per department and many employees to many departments.
+    Projects can be assigned to many departments as well and many departments can have many projects. This kind of relationship is called Many to Many.
+    The same manager can manage many different departments but any given department can only have one manager. This is a
+    One (Manager) to Many (Departments) relationship. Certain checks have been put into place to make sure a user doesn't make an error that
+    jeopardizes the system.
+
+    <br /><br />
+    This server utilises a SQL Database and is built with SpringBoot MVC Architecture and uses a JPA Repository to interact with the database.
+
+</div>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<html>
+<head>
+  <title>
+    Erin Argo | Proj5
+  </title>
+  <link rel="stylesheet" href="/global.css" />
+  <link rel="stylesheet" href="/department-edit.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script>
+        async function nuclearOption(dep) {
+            if(confirm('Are you sure about that? \nDelete Department?')) await fetch('/departments/'+ dep +'/delete', {
+                method: "POST"
+            }).then(() => window.location.href = '/departments');
+        }
+
+        async function lessNuclearMoreNapalm(projnum, department) {
+            if(confirm('Are you sure about that? \nUnassign Project with id of '+ projnum + '?'))
+                await fetch('/projects/'+department+'/' + projnum + '/remove-project', {
+                    method: "POST"
+                }).then(() => window.location.href = '/departments/' + department);
+        }
+    </script>
+    <script>
+        function closeModal() {
+            document.querySelector('.alert').remove();
+        }
+    </script>
+</head>
+
+<body>
+<nav class="top-nav">
+            <span class="nav-left">
+                <a href="/" id="logo">Project 5 CSC 471 - Erin Argo</a>
+            </span>
+
+  <span class="nav-right">
+                <a href="/employees">Employees</a>
+                <a href="/projects">Projects</a>
+                <a href="/departments">Departments</a>
+            </span>
+
+  <div></div>
+</nav>
+
+
+<div class="alert" th:if="${ alert }">
+    <span th:text="${ alert }" />
+    <a onclick="closeModal()">Ok</a>
+</div>
+
+
+<section class="side-nav">
+  <span class="name">username</span>
+  <span class="icons">
+                <img class="avatar" src="https://sugargeekshow.com/wp-content/uploads/2019/10/chocolate-chip-muffins-featured.jpg">
+            </span>
+</section>
+
+    <a class='nuclear-option' th:onclick="'nuclearOption('+${ department.deptnum }+')'">Delete Department?</a>
+
+<div class="wrapper">
+  <form class="department-edit" action="/departments/edit" method="POST">
+    <input type="number" th:value="${ department.deptnum }" name="deptnum" required />
+    <input type="text" th:value="${ department.deptname }" name="deptname" required />
+    <input type="submit" value="Save Department" />
+  </form>
+    <span class="location-wrapper">
+        <form class="department-location" action="/departments/add-location" method="POST">
+            <p th:text="'Current Location: ' + ${ location.getLocation() }" th:if="${ location }" />
+            <input type="text" placeholder="Add or Change Location" name="location" required />
+            <input type="hidden" th:value="${ department.deptnum }" name="department" />
+            <input type="submit" value="Create / Change Location" />
+        </form>
+    </span>
+
+    <form class="add-employee" action="/departments/add-employee" method="POST">
+        <input type="number" placeholder="Employee SSN" name="employee" required />
+        <input type="hidden" th:value="${ department.deptnum }" name="department" />
+        <input type="submit" value="Add Employee" />
+    </form>
+
+    <form class="remove-employee" action="/departments/remove-employee" method="POST">
+        <p th:if="${ employees.size() == 0 }">This department doesn't have any employees yet.</p>
+        <select name="employee">
+            <option th:each="emp : ${ employees }" th:value="${ emp.getSSN() }" th:text="${ emp.getFName() } + ': ' + ${ emp.getSSN() }"></option>
+        </select>
+        <input type="hidden" th:value="${ department.deptnum }" name="department" />
+        <input type="submit" value="Remove Employee" />
+    </form>
+
+    <form class="add-manager" action="/manager/add-manager" method="POST">
+        <input type="number" placeholder="Employee SSN" name="employee" required />
+        <input type="hidden" th:value="${ department.deptnum }" name="department" />
+        <input type="submit" value="Add Manager" />
+    </form>
+
+    <form class="remove-manager" action="/manager/remove-manager" method="POST" th:if="${ hasManager }">
+        <span>Acting Manager: <a th:text="${ managerUser.getFName() } + ': ' + ${ managerUser.getSSN() }"></a></span>
+        <input type="hidden" th:value="${ department.deptnum }" name="dept" />
+        <input type="submit" value="Remove Manager" />
+    </form>
+
+    <span>
+        <header>
+            Assigned Projects
+        </header>
+        <section>
+            <span th:each="project : ${ projects }">
+                <a class="card" th:text="'Project: ' + ${ project.getProjname() }" th:href="'/projects/' + ${ project.getProjname() }"></a>
+                <a th:onclick="'lessNuclearMoreNapalm(' + ${ project.getProjnum() } + ', ' + ${ department.deptnum } + ')'">X</a>
+            </span>
+        </section>
+    </span>
+</div>
+</body>
+</html>

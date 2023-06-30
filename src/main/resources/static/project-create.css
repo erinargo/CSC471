@@ -1,0 +1,43 @@
+textarea {
+    min-height: 15vh;
+    min-width: 100%;
+    max-height: 15vh;
+    max-width: 100%;
+
+    border-radius: 2vh;
+    background: black;
+    box-shadow: var(--box-shadow-1);
+
+    padding: 0.8vh;
+}
+
+.description-character-feedback {
+    display: flex;
+    flex-direction: row!important;
+    align-items: center;
+    justify-content: center;
+
+    color: white!important;
+
+    position: absolute;
+    width: 100%;
+
+    top: 28vh;
+    left: 18vw;
+}
+
+.description-character-feedback, .description-character-feedback span {
+    font-size: 1.8vh!important;
+}
+
+.nuclear-option {
+    position: fixed;
+    top: 12%;
+    left: 25%;
+    z-index: 999;
+}
+
+.nuclear-option * {
+    all: unset!important;
+    position: relative;
+}

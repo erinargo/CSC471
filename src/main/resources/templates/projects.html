@@ -1,0 +1,58 @@
+<html>
+<head>
+    <title>
+        Erin Argo | Proj5
+    </title>
+    <link rel="stylesheet" href="/global.css" />
+    <link rel="stylesheet" href="/list.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script>
+        function closeModal() {
+            document.querySelector('.alert-wrapper').remove();
+        }
+    </script>
+</head>
+
+<body>
+<nav class="top-nav">
+            <span class="nav-left">
+                <a href="/" id="logo">Project 5 CSC 471 - Erin Argo</a>
+            </span>
+
+    <span class="nav-right">
+                <a href="/employees">Employees</a>
+                <a href="/projects">Projects</a>
+                <a href="/departments">Departments</a>
+            </span>
+
+    <div></div>
+</nav>
+
+<div class="alert-wrapper" role="alert" th:if="${alert != null}">
+    <span class="alert">
+        <span th:text="${alert}" />
+        <a onclick="closeModal()">Ok</a>
+    </span>
+</div>
+
+<section class="side-nav">
+    <span class="name">username</span>
+    <span class="icons">
+                <img class="avatar" src="https://sugargeekshow.com/wp-content/uploads/2019/10/chocolate-chip-muffins-featured.jpg">
+            </span>
+</section>
+
+<a class="add" href="/projects/add"> Create Project </a>
+
+<div class="wrapper">
+    <span th:each="project : ${ projectList }" class="project">
+        <div class="list-wrapper">
+            <p th:text="'Project Name: ' + ${ project.getProjname() }"></p>
+            <p th:text="'Project Number: ' + ${ project.getProjnum() }"></p>
+            <p th:text="'Project Description: ' + ${ project.getProjectdesc() }"></p>
+            <a th:href="'/projects/' + ${ project.getProjname() }">Edit / View Project Details</a>
+        </div>
+    </span>
+</div>
+</body>
+</html>

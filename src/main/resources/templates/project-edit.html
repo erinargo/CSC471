@@ -1,0 +1,79 @@
+<html>
+<head>
+    <title>
+        Erin Argo | Proj5
+    </title>
+    <link rel="stylesheet" href="/global.css" />
+    <link rel="stylesheet" href="/project-create.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script>
+        async function nuclearOption(proj) {
+            if(confirm('Are you sure about that? \nDelete Project?')) await fetch('/projects/'+ proj +'/delete', {
+                method: "POST"
+            }).then(() => window.location.href = '/projects');
+        }
+    </script>
+    <script>
+        function closeModal() {
+            document.querySelector('.alert').remove();
+        }
+    </script>
+</head>
+
+<body>
+<nav class="top-nav">
+            <span class="nav-left">
+                <a href="/" id="logo">Project 5 CSC 471 - Erin Argo</a>
+            </span>
+
+    <span class="nav-right">
+                <a href="/employees">Employees</a>
+                <a href="/projects">Projects</a>
+                <a href="/departments">Departments</a>
+            </span>
+
+    <div></div>
+</nav>
+
+<div class="alert" th:if="${ alert }">
+    <span th:text="${ alert }" />
+    <a onclick="closeModal()">Ok</a>
+</div>
+
+<section class="side-nav">
+    <span class="name">username</span>
+    <span class="icons">
+                <img class="avatar" src="https://sugargeekshow.com/wp-content/uploads/2019/10/chocolate-chip-muffins-featured.jpg">
+            </span>
+</section>
+
+<a class='nuclear-option' th:onclick="'nuclearOption('+ ${ project.projnum } +')'">Delete Project?</a>
+<div class="wrapper">
+    <p class="description-character-feedback">Characters Left: <span id="character-count">255</span></p>
+    <form action="/projects/edit" method="POST">
+        <input type="text" name="projname" th:value="${ project.projname }" required />
+        <input type="number" name="projnum" th:value="${ project.projnum }" required />
+        <textarea name="projectdesc" id="proj-desc" th:text="${ project.projectdesc }" maxlength="255"></textarea>
+        <input type="submit" value="Save Project" required />
+    </form>
+
+    <h1>Assign to Department</h1>
+    <form action="/projects/assign-project" method="POST">
+        <select name="department">
+            <option th:each=" department : ${ departmentList }" th:text="${ department.deptname } + ': ' + ${ department.deptnum } " th:value="${ department.deptnum }"></option>
+        </select>
+        <input type="hidden" name="projName" th:value="${ project.projname }" />
+        <input type="submit" value="Assign Project" />
+    </form>
+</div>
+</body>
+
+<script>
+    const MAX_CHAR = 255;
+
+    document.getElementById('proj-desc').addEventListener("keyup", (event) => {
+        document.getElementById("character-count").innerHTML =
+            MAX_CHAR - document.getElementById('proj-desc').value.length;
+    })
+</script>
+</html>

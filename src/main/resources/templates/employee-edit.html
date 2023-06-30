@@ -1,0 +1,91 @@
+<html>
+<head>
+    <title>
+        Erin Argo | Proj5
+    </title>
+    <link rel="stylesheet" href="/global.css" />
+    <link rel="stylesheet" href="/edit.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script>
+        function closeModal() {
+            document.querySelector('.alert').remove();
+        }
+    </script>
+</head>
+
+<body>
+<nav class="top-nav">
+            <span class="nav-left">
+                <a href="/" id="logo">Project 5 CSC 471 - Erin Argo</a>
+            </span>
+
+    <span class="nav-right">
+                <a href="/employees">Employees</a>
+                <a href="/projects">Projects</a>
+                <a href="/departments">Departments</a>
+            </span>
+
+    <div></div>
+</nav>
+
+<div class="alert" th:if="${ alert }">
+    <span th:text="${ alert }" />
+    <a onclick="closeModal()">Ok</a>
+</div>
+
+<section class="side-nav">
+    <span class="name">username</span>
+    <span class="icons">
+                <img class="avatar" src="https://sugargeekshow.com/wp-content/uploads/2019/10/chocolate-chip-muffins-featured.jpg">
+            </span>
+</section>
+
+<div class="wrapper">
+    <span class="dependents">
+        <h1>Employee Dependents</h1>
+        <form action="/employees/{employee}/dependents/create" method="POST">
+            <input type="text" placeholder="Enter Name" name="Name" required />
+            <input type="text" placeholder="Enter DOB" name="DOB" required />
+            <input type="hidden" name="employee" th:value="${ employee.getSSN() }" />
+            <input type="submit" value="Create Dependent" />
+        </form>
+        <section th:each="dependent : ${ dependents }">
+            Dependent Name: <a th:text="${ dependent.getName() }" />
+            Dependent DOB: <a th:text="${ dependent.getDOB() }"/>
+            <form method="POST" action="/employees/{employee}/dependents/delete">
+                <input type="submit" value="Delete Dependent" />
+                <input type="hidden" th:value="${ dependent.getId() }" name="id" />
+            </form>
+        </section>
+    </span>
+
+    <span th:each="employee : ${ employee }" class="Employee Info">
+    <h1>Employee Info</h1>
+    <section>
+        <form method="POST" action="/employees/edit">
+            <input type="number" th:value="${ employee.getSSN() }" name="SSN" required />
+            <input type="text" th:value="${ employee.getDOB() }" name="DOB" required />
+            <input type="text" th:value="${ employee.getFName() }" name="FName" required />
+            <input type="text" th:value="${ employee.getMinit() }" name="Minit" required />
+            <input type="text" th:value="${ employee.getLName() }" name="LName" required />
+              Salary Pay: <input type="number" placeholder="Salary Pay" name="SalaryPay" th:value="${ pay.getSalarypay() }" required />
+              Hourly Pay: <input type="number" step="0.01" placeholder="Hourly Pay" name="HourlyPay" th:value="${ pay.getHourlypay() }" required />
+            <input type="submit" value="Save" />
+        </form>
+        <form method="POST" action="/employees/delete">
+            <input type="submit" value="Delete Employee" />
+            <input type="hidden" th:value="${ employee.getSSN() }" name="ssn" />
+        </form>
+    </section>
+
+    <h1>Departments In</h1>
+    <section th:each="department : ${ department }">
+        <br />
+      Department Name: <a th:text="${ department.getDeptname() }" th:href="'/departments/' + ${ department.getDeptnum() }" />
+      Department Number: <a th:text="${ department.getDeptnum() }"  th:href="'/departments/' + ${ department.getDeptnum() }"/>
+        <br />
+    </section>
+  </span>
+</div>
+</body>
+</html>
